@@ -1,0 +1,6 @@
+[local-baseservers]
+localhost
+
+# baseservers
+[baseservers:children]
+local-baseservers

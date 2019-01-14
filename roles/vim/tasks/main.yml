@@ -1,0 +1,40 @@
+
+- name: add vim repository
+  get_url:
+    url: https://copr.fedorainfracloud.org/coprs/unixcommunity/vim/repo/epel-7/unixcommunity-vim-epel-7.repo
+    dest: /etc/yum.repos.d/mcepl-vim8-epel-7.repo
+
+- name: install vim and git
+  yum:
+   name: "{{ item.pkg }}"
+   state: "{{ item.version }}"
+  with_items:
+    - { pkg: vim,  version: latest }
+    - { pkg: git,  version: latest }
+
+- name: create dein directory
+  file:
+   path: "{{ item.dest }}"
+   state: directory
+  with_items:
+    - { dest: ~/.cache/dein       }
+    - { dest: ~/.cache/userconfig }
+
+- name: download dein installer.sh
+  get_url:
+    url: https://raw.githubusercontent.com/Shougo/dein.vim/master/bin/installer.sh
+    dest: '~/.cache/dein/installer.sh'
+
+- name: kick installer.sh
+  shell: sh ~/.cache/dein/installer.sh ~/.cache/dein/
+  become: yes
+  become_user: "{{ user }}"
+
+- name: copy setting file
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+  with_items:
+    - { src: plugin.toml,      dest: ~/.cache/userconfig }
+    - { src: plugin_lazy.toml, dest: ~/.cache/userconfig }
+    - { src: .vimrc,           dest: ~/                  }

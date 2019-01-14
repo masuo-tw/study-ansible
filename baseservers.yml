@@ -1,0 +1,4 @@
+---
+- hosts: baseservers
+  roles:
+    - vim
