@@ -1,0 +1,11 @@
+[test-servers]
+192.168.56.52
+
+# python_inst
+[python_inst:children]
+test-servers
+
+# baseservers
+[baseservers:children]
+test-servers
+

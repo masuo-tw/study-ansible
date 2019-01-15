@@ -1,0 +1,5 @@
+---
+- hosts: python_inst
+  roles:
+     - python
+

@@ -4,6 +4,18 @@
     url: https://copr.fedorainfracloud.org/coprs/unixcommunity/vim/repo/epel-7/unixcommunity-vim-epel-7.repo
     dest: /etc/yum.repos.d/mcepl-vim8-epel-7.repo
 
+- name: confirm vim rpm
+  shell: rpm -qa | grep vim-minimal-7.4.160-4.el7.x86_64
+  register: result
+  ignore_errors: yes
+
+- name: debug result var
+  debug: var=result
+
+- name: remove vim rpm
+  shell: rpm -e vim-minimal-7.4.160-4.el7.x86_64 --nodeps
+  when: result.rc == 0
+
 - name: install vim and git
   yum:
    name: "{{ item.pkg }}"
