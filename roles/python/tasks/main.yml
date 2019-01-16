@@ -30,10 +30,10 @@
   shell: source ~/.bash_profile
 
 - name: install pyenv
-  shell: pyenv install {{ python_version }}
+  shell: /bin/bash -lc "pyenv install {{ python_version }}"
 
 - name: change python version
-  shell: pyenv global {{ python_version }}
+  shell: /bin/bash -lc "pyenv global {{ python_version }}"
 
 - name: set fact
   set_fact: ansible_python_interpreter=/root/.pyenv/shims/python
