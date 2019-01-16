@@ -1,0 +1,42 @@
+
+- name: install pkg for build python
+  yum:
+     name: "{{ item.pkg }}"
+     state: "{{ item.version }}"
+  with_items:
+     - { pkg: git,           version: latest }
+     - { pkg: gcc,           version: latest }
+     - { pkg: bzip2,         version: latest }
+     - { pkg: bzip2-devel,   version: latest }
+     - { pkg: openssl,       version: latest }
+     - { pkg: openssl-devel, version: latest }
+     - { pkg: readline,      version: latest }
+     - { pkg: readline-devel,version: latest }
+    
+- name: git clone
+  git:
+     repo: https://github.com/yyuu/pyenv.git
+     dest: ~/.pyenv
+
+- name: add .bash_profile python path
+  blockinfile:
+     path: ~/.bash_profile
+     block: |
+        export PYENV_ROOT="$HOME/.pyenv"
+        export PATH="$PYENV_ROOT/bin:$PATH"
+        eval "$(pyenv init -)"
+
+- name: source_bash_profile
+  shell: source ~/.bash_profile
+
+- name: install pyenv
+  shell: /bin/bash -lc "pyenv install {{ python_version }}"
+
+- name: change python version
+  shell: /bin/bash -lc "pyenv global {{ python_version }}"
+
+- name: set fact
+  set_fact: ansible_python_interpreter=/root/.pyenv/shims/python
+
+- name: change python version
+  shell: pyenv rehash
