@@ -1,0 +1,4 @@
+---
+- hosts: ruby_inst
+  roles:
+     - ruby

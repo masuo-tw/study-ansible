@@ -1,0 +1,43 @@
+
+- name: install pkg for build ruby
+  yum:
+     name: "{{ item.pkg }}"
+     state: "{{ item.version }}"
+  with_items:
+     - { pkg: git,           version: latest }
+     - { pkg: gcc,           version: latest }
+     - { pkg: bzip2,         version: latest }
+     - { pkg: zlib-devel,    version: latest }
+     - { pkg: openssl,       version: latest }
+     - { pkg: openssl-devel, version: latest }
+     - { pkg: readline,      version: latest }
+     - { pkg: readline-devel,version: latest }
+    
+- name: git clone rbenv
+  git:
+     repo: https://github.com/sstephenson/rbenv.git
+     dest: ~/.rbenv
+
+- name: add .bash_profile ruby path
+  blockinfile:
+     path: ~/.bash_profile
+     block: |
+        export PATH="$HOME/.rbenv/bin:$PATH"
+        eval "$(rbenv init -)"
+
+- name: git clone ruby-build
+  git:
+     repo: git://github.com/sstephenson/ruby-build.git
+     dest: ~/.rbenv/plugins/ruby-build
+
+- name: kick install.sh
+  shell: sh ~/.rbenv/plugins/ruby-build/install.sh
+  become: yes
+  bicome_user: root
+
+- name: source_bash_profile
+  shell: source ~/.bash_profile
+
+- name: install rbenv
+  shell: /bin/bash -lc "rbenv install {{ ruby_version }}"
+
