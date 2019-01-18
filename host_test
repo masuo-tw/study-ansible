@@ -1,6 +1,10 @@
 [test-servers]
 192.168.56.52
 
+# ruby_inst
+[ruby_inst:children]
+test-servers
+
 # python_inst
 [python_inst:children]
 test-servers
