@@ -21,6 +21,7 @@
 - name: add .bash_profile ruby path
   blockinfile:
      path: ~/.bash_profile
+     marker: "# {mark} ANSIBLE MANAGED BLOCK (RUBY)"
      block: |
         export PATH="$HOME/.rbenv/bin:$PATH"
         eval "$(rbenv init -)"
@@ -33,11 +34,17 @@
 - name: kick install.sh
   shell: sh ~/.rbenv/plugins/ruby-build/install.sh
   become: yes
-  bicome_user: root
+  become_user: root
 
-- name: source_bash_profile
-  shell: source ~/.bash_profile
+- name: install dir check
+  stat: path=~/.rbenv/versions
+  register: inst_dir
 
 - name: install rbenv
   shell: /bin/bash -lc "rbenv install {{ ruby_version }}"
+  when: not inst_dir.stat.exists
+
+- name: change ruby version
+  shell: /bin/bash -lc "rbenv global {{ ruby_version }}"
+
 

@@ -21,16 +21,19 @@
 - name: add .bash_profile python path
   blockinfile:
      path: ~/.bash_profile
+     marker: "# {mark} ANSIBLE MANAGED BLOCK (PYTHON)"
      block: |
         export PYENV_ROOT="$HOME/.pyenv"
         export PATH="$PYENV_ROOT/bin:$PATH"
         eval "$(pyenv init -)"
 
-- name: source_bash_profile
-  shell: source ~/.bash_profile
+- name: install dir check
+  stat: path=~/.pyenv/version
+  register: inst_dir
 
 - name: install pyenv
   shell: /bin/bash -lc "pyenv install {{ python_version }}"
+  when: not inst_dir.stat.exists
 
 - name: change python version
   shell: /bin/bash -lc "pyenv global {{ python_version }}"
