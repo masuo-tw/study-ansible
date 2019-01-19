@@ -1,7 +1,8 @@
 ---
-- import_playbook: baseservers.yml
+# - import_playbook: baseservers.yml
 
-- import_playbook: ruby_inst.yml
+# - import_playbook: ruby_inst.yml
 
-- import_playbook: python_inst.yml
+# - import_playbook: python_inst.yml
 
+- import_playbook: docker_inst.yml
