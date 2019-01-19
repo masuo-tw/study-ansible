@@ -1,0 +1,23 @@
+
+- name: install pkg for docker
+  yum:
+     name: "{{ item.pkg }}"
+     state: "{{ item.version }}"
+  with_items:
+     - { pkg: yum-utils,                     version: latest }
+     - { pkg: device-mapper-persistent-data, version: latest }
+     - { pkg: lvm2,                          version: latest }
+
+- name: add docker Repositories
+  shell: yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+
+- name: install docker
+  yum:
+     name: docker-ce
+     state: latest
+
+- name: start docker.service and set enabled
+  systemd:
+     name: docker
+     state: started
+     enabled: yes

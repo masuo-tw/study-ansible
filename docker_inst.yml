@@ -1,0 +1,4 @@
+---
+- hosts: docker_inst
+  roles:
+     - docker

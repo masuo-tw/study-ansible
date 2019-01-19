@@ -1,6 +1,10 @@
 [test-servers]
 192.168.56.52
 
+# docker_inst
+[docker_inst:children]
+test-servers
+
 # ruby_inst
 [ruby_inst:children]
 test-servers
