@@ -21,3 +21,13 @@
      name: docker
      state: started
      enabled: yes
+
+- name: install docker-compose
+  get_url:
+     url: "{{ docker_compose_download_url }}"
+     dest: "{{ docker_compose_install_path }}"
+
+- name: change permission
+  file:
+     path: "{{ docker_compose_install_path }}"
+     mode: 755
