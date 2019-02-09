@@ -39,5 +39,6 @@ if dein#check_install()
 endif
 "End dein Scripts-------------------------
 
+set expandtab
 set tabstop=2
-set shiftwidth=3
+set shiftwidth=2
