@@ -1,5 +1,5 @@
 [test-servers]
-192.168.56.52
+172.16.10.3
 
 # docker_inst
 [docker_inst:children]
